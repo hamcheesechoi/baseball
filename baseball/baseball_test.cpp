@@ -4,7 +4,7 @@
 
 class BaseballFixture : public testing::Test {
 public:
-	Baseball game;
+	Baseball game{ "123" };
 	void assertIllegalArgument(string guessNumber) {
 		//game.guess() 수행 후, Exception이 발생해야 PASS 이다.
 		try {
@@ -24,6 +24,13 @@ TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase) {
 	assertIllegalArgument("121");
 }
 
+TEST_F(BaseballFixture, ReturnSolvedResultIfMatchedNumber) {
+	GuessResult result = game.guess("123");
+
+	EXPECT_TRUE(result.solved);
+	EXPECT_EQ(3, result.strickes);
+	EXPECT_EQ(0, result.balls);
+}
 
 int main() {
 	testing::InitGoogleMock();
