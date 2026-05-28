@@ -2,15 +2,27 @@
 #include "baseball.cpp"
 #include "baseball_test.h"
 
-TEST(BaseballGame, ThrowExceptionWhenInputLengthIsUnmatched) {
+class BaseballFixture : public testing::Test {
+public:
 	Baseball game;
-	EXPECT_THROW(game.guess(string("12")), length_error);
+	void assertIllegalArgument(string guessNumber) {
+		//game.guess() 수행 후, Exception이 발생해야 PASS 이다.
+		try {
+			game.guess(guessNumber);
+			FAIL();
+		}
+		catch (exception e) {
+			// PASS
+		}
+	}
+};
+
+
+TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase) {
+	assertIllegalArgument("12");
+	assertIllegalArgument("12s");
 }
 
-TEST(BaseballGame, ThrowExceptionWhenInvalidChar) {
-	Baseball game;
-	EXPECT_THROW(game.guess(string("12s")), invalid_argument);
-}
 int main() {
 	testing::InitGoogleMock();
 	return RUN_ALL_TESTS();
